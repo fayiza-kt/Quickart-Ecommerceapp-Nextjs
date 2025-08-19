@@ -20,7 +20,7 @@ interface Product {
   rating: { rate: number; count: number };
 }
 
-export default async function ProductsPage({ searchParams }: { searchParams: { search?: string } }) {
+export default async function ProductsPage({ searchParams }: { searchParams:  Promise<{ search?: string }> }) {
   
   //Accessing cookies and headers
   const headersList = await headers();
@@ -31,7 +31,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: { s
   // 1. Fetch products
   const products: Product[] = await ProductService.getProducts();
   // 2. Get the search query from URL
-  const searchQuery = searchParams.search?.toLowerCase() || "";
+  const resolvedSearchParams = await searchParams;
+  const searchQuery = resolvedSearchParams.search?.toLowerCase() || "";
 
   // 3. Filter products
   const filteredProducts = products.filter((p) =>

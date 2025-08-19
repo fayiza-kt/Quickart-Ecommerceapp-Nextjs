@@ -6,9 +6,9 @@ import React from 'react'
 
 
 export async function generateMetadata(
-  { params }: { params: { productid: string } }
+  { params }: { params: Promise<{ productid: string }> }
 ): Promise<Metadata> {
-  const productid = params.productid;
+  const { productid } = await params;
   const product: Product | null = await ProductService.getProductById(Number(productid));
 
   if (product) {
@@ -29,8 +29,8 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProductDetail({ params }: { params: { productid: string } }) {
-  const productid = params.productid;
+export default async function ProductDetail({ params }: { params: Promise<{ productid: string }> }) {
+  const { productid } = await params;
   let product: Product | null = null;
 
   if (productid) {
