@@ -1,18 +1,16 @@
-
 import AddToCartButton from '@/app/components/AddToCartButton/AddToCartButton';
 import { Product } from '@/app/context/CartContext/CartContext';
 import { ProductService } from '@/app/services/product-services';
+import { Metadata } from 'next';
 import React from 'react'
 
-interface ProductDetailProps {
-      params: {
-      productid: string;
-    };
-  }
 
-export async function generateMetadata(props:any) {
-  const productid = props.params.productid;
-  const product: Product = await ProductService.getProductById(Number(productid));
+export async function generateMetadata(
+  { params }: { params: { productid: string } }
+): Promise<Metadata> {
+  const productid = params.productid;
+  const product: Product | null = await ProductService.getProductById(Number(productid));
+
   if (product) {
     return {
       title: product.title,
@@ -24,11 +22,15 @@ export async function generateMetadata(props:any) {
       },
     };
   }
-  return {};
+
+  return {
+    title: "Product not found",
+    description: "The requested product does not exist.",
+  };
 }
 
-export default async function ProductDetail({ params }: ProductDetailProps) {
-  const productid =  await params.productid;
+export default async function ProductDetail({ params }: { params: { productid: string } }) {
+  const productid = params.productid;
   let product: Product | null = null;
 
   if (productid) {
