@@ -1,28 +1,41 @@
-
+'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import CartIcon from '../CartIcon/CartIcon'
 import SearchBar from '../SearchBar/SearchBar'
 
 
 function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar navbar-expand-md navbar-dark bg-dark">
       <div className="container-fluid">
           <Link className="navbar-brand" href="/">Quickart</Link>
-          <div className=" collapse navbar-collapse">
-          <ul className="navbar-nav me-auhref mb-2 mb-lg-0 me-5">
-            <li className="nav-item"><Link className="nav-link" href="/">Home</Link></li>
-            <li className="nav-item"><Link className="nav-link" href="/products">Products</Link></li>
-            <li className="nav-item"><Link className="nav-link" href="/about-us">About Us</Link></li>
-            <li className="nav-item"><Link className="nav-link" href="/contact-us">Contact Us</Link></li>
-          </ul>
-          <SearchBar />
+          <button className="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded={isOpen} aria-label="Toggle navigation" onClick={() => setIsOpen(!isOpen)}>
+                <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id="navbarNavDropdown">
+            <ul className="navbar-nav">
+              <li className="nav-item"><Link className="nav-link" href="/">Home</Link></li>
+              <li className="nav-item"><Link className="nav-link" href="/products">Products</Link></li>
+              <li className="nav-item"><Link className="nav-link" href="/about-us">About Us</Link></li>
+              <li className="nav-item"><Link className="nav-link" href="/contact-us">Contact Us</Link></li>
+            </ul>
+            
         </div>
-        <Link className="nav-link" href="/login" style={{ color:'white' }}>Login</Link>
+        <div className="mx-3">
+            <SearchBar />
+        </div>
+
+        
+        <div className="d-flex align-items-center">
+          <Link className="nav-link me-3" href="/login" style={{ color:'white' }}>Login</Link>
+          <Link href="/cart" className="btn btn-outline-light me-2" >Cart<CartIcon /></Link>
+        </div>
+       
       </div>
-      <Link href="/cart" className="btn btn-outline-light me-2" >Cart<CartIcon /></Link>
     </nav>
     
     </div>
